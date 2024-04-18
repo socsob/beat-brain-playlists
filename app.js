@@ -16,7 +16,12 @@ const jsonSpace = (debug) ? 2 : null;
 const featuredPlaylistsFields = (debug) ? '' : 'playlists(items(name,id,external_urls(spotify)))';
 const playlistsFields = (debug) ? '' : 'name,description,external_urls(spotify),tracks(items(track(id,name,artists(name),external_urls(spotify))))';
 
-const detailsDir = './playlist_details';
+const docsDir = './docs/'
+const detailsDir = `${docsDir}playlist_details/`;
+
+if (!fs.existsSync(docsDir)){
+    fs.mkdirSync(docsDir);
+}
 
 if (fs.existsSync(detailsDir)) {
     clearDirectory(detailsDir);
@@ -59,7 +64,7 @@ async function fetchFeaturedPlaylists() {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
-        fs.writeFileSync('featured-playlists.json', JSON.stringify(featuredPlaylistsResponse.data, null, jsonSpace));
+        fs.writeFileSync(`${docsDir}featured-playlists.json`, JSON.stringify(featuredPlaylistsResponse.data, null, jsonSpace));
         console.log('Featured playlists summary has been saved to featured-playlists.json');
 
         await Promise.all(featuredPlaylistsResponse.data.playlists.items.map(playlist =>
