@@ -8,8 +8,8 @@ const featuredPlaylistsEndpoint = 'browse/featured-playlists';
 const playlistsEnpoint = 'playlists/';
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
+const numberOfPlaylists = process.env.NUMBER_OF_PLAYLISTS;
 
-const numberOfPlaylists = 10;
 const debug = false;
 
 const jsonSpace = (debug) ? 2 : null;
