@@ -10,11 +10,14 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const numberOfPlaylists = process.env.NUMBER_OF_PLAYLISTS;
 
-const debug = false;
+//debugging
+const formatJson = true;
+const showAllFields = false;
 
-const jsonSpace = (debug) ? 2 : null;
-const featuredPlaylistsFields = (debug) ? '' : 'playlists(items(name,id,external_urls(spotify)))';
-const playlistsFields = (debug) ? '' : 'id,name,description,external_urls(spotify),tracks(items(track(id,name,artists(name),explicit,external_urls(spotify))))';
+
+const jsonSpace = (formatJson) ? 2 : null;
+const featuredPlaylistsFields = (showAllFields) ? '' : 'playlists(items(name,id,external_urls(spotify)))';
+const playlistsFields = (showAllFields) ? '' : 'id,name,description,external_urls(spotify),tracks(items(track(id,name,artists(name),explicit,external_urls(spotify))))';
 
 const docsDir = './docs/'
 const detailsDir = `${docsDir}playlist_details/`;
@@ -57,6 +60,10 @@ async function fetchFeaturedPlaylists() {
             fetchPlaylistDetails(accessToken, playlist));
         const allPlaylistDetails = await Promise.all(playlistDetailsPromises);
 
+        featuredPlaylistsResponse.data.playlists.items.forEach((playlist, index) => {
+            playlist.explicit = allPlaylistDetails[index].explicit;
+        });
+
         fs.writeFileSync(`${docsDir}featured-playlists.json`, JSON.stringify(featuredPlaylistsResponse.data, null, jsonSpace));
         console.log('Featured playlists summary has been saved to featured-playlists.json');
 
@@ -71,7 +78,7 @@ async function fetchFeaturedPlaylists() {
             console.log(`Saved ${details.name} details to ${filename}`);
         });
     } catch (error) {
-        console.error('Error fetching featured playlists:', error);
+        console.error('Error fetching playlists:', error);
     }
 }
 
@@ -83,6 +90,7 @@ async function fetchPlaylistDetails(accessToken, playlist) {
                 'Authorization': `Bearer ${accessToken}`
             }
         });
+        response.data.explicit = response.data.tracks.items.some(item => item.track.explicit);
         return response.data;
     } catch (error) {
         console.error('Error fetching playlist details:', error);
