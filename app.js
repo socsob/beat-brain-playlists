@@ -10,9 +10,10 @@ const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const numberOfPlaylists = process.env.NUMBER_OF_PLAYLISTS;
 
+
 //debugging
-const formatJson = true;
-const showAllFields = false;
+const formatJson = process.env.DEBUG_FORMAT_JSON;
+const showAllFields = process.env.DEBUG_SHOW_ALL_FIELDS;
 
 
 const jsonSpace = (formatJson) ? 2 : null;
