@@ -17,7 +17,7 @@ const showAllFields = process.env.DEBUG_SHOW_ALL_FIELDS;
 
 
 const jsonSpace = (formatJson) ? 2 : null;
-const featuredPlaylistsFields = (showAllFields) ? '' : 'playlists(items(name,id,external_urls(spotify)))';
+const featuredPlaylistsFields = (showAllFields) ? '' : 'playlists(items(id,name,description,external_urls(spotify)))';
 const playlistsFields = (showAllFields) ? '' : 'id,name,description,external_urls(spotify),tracks(items(track(id,name,artists(name),explicit,external_urls(spotify))))';
 
 const docsDir = './docs/'
