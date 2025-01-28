@@ -1,6 +1,8 @@
 # Beat Brain Playlists
 
-Serves information on current Spotify featured playlists
+Serves information on current Spotify featured playlists  
+
+*UPDATE*: [Spotify removed their featured playlist endpoint](https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api). This is still a good example for a free API proxy but the functionality is no longer possible
 
 ## Description
 
