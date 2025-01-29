@@ -4,11 +4,14 @@ const fs = require('fs');
 const path = require('path');
 
 const spotifyApiUrl = 'https://api.spotify.com/v1/';
-const featuredPlaylistsEndpoint = 'browse/featured-playlists';
 const playlistsEnpoint = 'playlists/';
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
-const numberOfPlaylists = process.env.NUMBER_OF_PLAYLISTS;
+const playlistIdString = process.env.PLAYLIST_IDS;
+const playlistIds = playlistIdString
+.split(',')
+.map(item => item.trim())
+.filter(item => item.length > 0);
 
 
 //debugging
@@ -17,10 +20,10 @@ const showAllFields = process.env.DEBUG_SHOW_ALL_FIELDS;
 
 
 const jsonSpace = (formatJson) ? 2 : null;
-const featuredPlaylistsFields = (showAllFields) ? '' : 'playlists(items(id,name,description,external_urls(spotify)))';
 const playlistsFields = (showAllFields) ? '' : 'id,name,description,external_urls(spotify),tracks(items(track(id,name,artists(name),explicit,external_urls(spotify))))';
 
 const docsDir = './docs/'
+const logFilePath = `${docsDir}log.txt`;
 const detailsDir = `${docsDir}playlist_details/`;
 
 if (!fs.existsSync(docsDir)){
@@ -32,6 +35,18 @@ function clearDirectorySync(directory) {
     for (const file of files) {
         fs.unlinkSync(path.join(directory, file));
     }
+}
+
+//logging sync currently - could be optimized
+function logMessage(message) {
+    const timestamp = new Date().toISOString();
+    const logEntry = `[${timestamp}] ${message}\n`;
+
+    fs.appendFileSync(logFilePath, logEntry, (err) => {
+        if (err) {
+            console.error('Failed to write to log file:', err);
+        }
+    });
 }
 
 async function getAccessToken() {
@@ -51,22 +66,20 @@ async function getAccessToken() {
 
 async function fetchFeaturedPlaylists() {
     try {
+        fs.writeFileSync(logFilePath, 'Application started...\n')
         const accessToken = await getAccessToken();
-        const featuredPlaylistsResponse = await axios.get(`${spotifyApiUrl}${featuredPlaylistsEndpoint}?limit=${numberOfPlaylists}&fields=${featuredPlaylistsFields}`, {
-            headers: {
-                'Authorization': `Bearer ${accessToken}`
-            }
-        });
-        const playlistDetailsPromises = featuredPlaylistsResponse.data.playlists.items.map(playlist =>
-            fetchPlaylistDetails(accessToken, playlist));
-        const allPlaylistDetails = await Promise.all(playlistDetailsPromises);
+        const playlistDetailsPromises = playlistIds.map(id =>
+            fetchPlaylistDetails(accessToken, id));
+        const allPlaylistDetails = (await Promise.all(playlistDetailsPromises)).filter(p => p != null);
 
-        featuredPlaylistsResponse.data.playlists.items.forEach((playlist, index) => {
-            playlist.explicit = allPlaylistDetails[index].explicit;
-        });
+        const featuredPlaylists = allPlaylistDetails.map((playlist) => {
+            const { id,name,description,external_urls,explicit } = playlist;
+            playlistSnippet = { id,name,description,external_urls,explicit };
+            return playlistSnippet;
+        })
 
-        fs.writeFileSync(`${docsDir}featured-playlists.json`, JSON.stringify(featuredPlaylistsResponse.data, null, jsonSpace));
-        console.log('Featured playlists summary has been saved to featured-playlists.json');
+        fs.writeFileSync(`${docsDir}featured-playlists.json`, JSON.stringify(featuredPlaylists, null, jsonSpace));
+        logMessage('Featured playlists summary has been saved to featured-playlists.json');
 
         if (fs.existsSync(detailsDir)) {
             clearDirectorySync(detailsDir);
@@ -74,19 +87,19 @@ async function fetchFeaturedPlaylists() {
             fs.mkdirSync(detailsDir);
         }
         allPlaylistDetails.forEach((details) => {
-            const filename = `${detailsDir}/${details.id}.json`;
+            const filename = `${detailsDir}${details.id}.json`;
             fs.writeFileSync(filename, JSON.stringify(details, null, jsonSpace));
-            console.log(`Saved ${details.name} details to ${filename}`);
+            logMessage(`Saved ${details.name} details to ${filename}`);
         });
     } catch (error) {
-        console.error('Error fetching playlists:', error);
+        logMessage(error);
     }
 }
 
 //note: caps at first 100 and doesn't fetch next page - works for me
-async function fetchPlaylistDetails(accessToken, playlist) {
+async function fetchPlaylistDetails(accessToken, id) {
     try {
-        const response = await axios.get(`${spotifyApiUrl}${playlistsEnpoint}${playlist.id}?fields=${playlistsFields}`, {
+        const response = await axios.get(`${spotifyApiUrl}${playlistsEnpoint}${id}?fields=${playlistsFields}`, {
             headers: {
                 'Authorization': `Bearer ${accessToken}`
             }
@@ -94,8 +107,8 @@ async function fetchPlaylistDetails(accessToken, playlist) {
         response.data.explicit = response.data.tracks.items.some(item => item.track.explicit);
         return response.data;
     } catch (error) {
-        console.error('Error fetching playlist details:', error);
-        throw error;
+        logMessage(`Failed fetching playlist with id: ${id} because of error: ${error.message}`);
+        return null;
     }
 }
 
