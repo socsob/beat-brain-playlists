@@ -8,10 +8,7 @@ const playlistsEnpoint = 'playlists/';
 const clientId = process.env.SPOTIFY_CLIENT_ID;
 const clientSecret = process.env.SPOTIFY_CLIENT_SECRET;
 const playlistIdString = process.env.PLAYLIST_IDS;
-const playlistIds = playlistIdString
-.split(',')
-.map(item => item.trim())
-.filter(item => item.length > 0);
+const playlistIds = playlistIdString.split(',').map(item => item.trim()).filter(item => item.length > 0);
 
 
 //debugging
