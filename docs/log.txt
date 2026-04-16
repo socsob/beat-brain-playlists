@@ -1,7 +1,7 @@
 Application started...
-[2026-04-15T00:25:42.378Z] Failed fetching playlist with id: 42UkpxHZzexqaG1T2Wf2yu because of error: Request failed with status code 429
-[2026-04-15T00:25:42.379Z] Failed fetching playlist with id: 18EmXIwVHNGJPLuTvPKeBG because of error: Request failed with status code 429
-[2026-04-15T00:25:42.380Z] Failed fetching playlist with id: 1ogG7mnh0B6FOakC1NSNKF because of error: Request failed with status code 429
-[2026-04-15T00:25:42.384Z] Failed fetching playlist with id: 0chdKQr18NN9WRI355V8BN because of error: Request failed with status code 429
-[2026-04-15T00:25:43.168Z] Featured playlists summary has been saved to featured-playlists.json
-[2026-04-15T00:25:43.169Z] Saved Top 100 most streamed songs on Spotify *Updated* details to ./docs/playlist_details/5ABHKGoOzxkaa28ttQV9sE.json
+[2026-04-16T00:25:47.198Z] Failed fetching playlist with id: 42UkpxHZzexqaG1T2Wf2yu because of error: Request failed with status code 429
+[2026-04-16T00:25:47.199Z] Failed fetching playlist with id: 1ogG7mnh0B6FOakC1NSNKF because of error: Request failed with status code 429
+[2026-04-16T00:25:47.203Z] Failed fetching playlist with id: 18EmXIwVHNGJPLuTvPKeBG because of error: Request failed with status code 429
+[2026-04-16T00:25:47.210Z] Failed fetching playlist with id: 0chdKQr18NN9WRI355V8BN because of error: Request failed with status code 429
+[2026-04-16T00:25:47.720Z] Featured playlists summary has been saved to featured-playlists.json
+[2026-04-16T00:25:47.721Z] Saved Top 100 most streamed songs on Spotify *Updated* details to ./docs/playlist_details/5ABHKGoOzxkaa28ttQV9sE.json
