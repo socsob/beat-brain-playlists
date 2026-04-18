@@ -1,7 +1,7 @@
 Application started...
-[2026-04-17T00:24:19.532Z] Featured playlists summary has been saved to featured-playlists.json
-[2026-04-17T00:24:19.532Z] Saved Top 100 most streamed songs on Spotify *Updated* details to ./docs/playlist_details/5ABHKGoOzxkaa28ttQV9sE.json
-[2026-04-17T00:24:19.532Z] Saved disney songs that slap harder than your mom last night details to ./docs/playlist_details/42UkpxHZzexqaG1T2Wf2yu.json
-[2026-04-17T00:24:19.533Z] Saved Fun Toddler Songs  details to ./docs/playlist_details/1ogG7mnh0B6FOakC1NSNKF.json
-[2026-04-17T00:24:19.533Z] Saved Today's Rap Hits 2026  details to ./docs/playlist_details/18EmXIwVHNGJPLuTvPKeBG.json
-[2026-04-17T00:24:19.533Z] Saved USA Hits 2026 💛 details to ./docs/playlist_details/0chdKQr18NN9WRI355V8BN.json
+[2026-04-18T00:21:40.999Z] Failed fetching playlist with id: 5ABHKGoOzxkaa28ttQV9sE because of error: Request failed with status code 429
+[2026-04-18T00:21:41.000Z] Failed fetching playlist with id: 1ogG7mnh0B6FOakC1NSNKF because of error: Request failed with status code 429
+[2026-04-18T00:21:41.005Z] Failed fetching playlist with id: 0chdKQr18NN9WRI355V8BN because of error: Request failed with status code 429
+[2026-04-18T00:21:41.733Z] Featured playlists summary has been saved to featured-playlists.json
+[2026-04-18T00:21:41.733Z] Saved disney songs that slap harder than your mom last night details to ./docs/playlist_details/42UkpxHZzexqaG1T2Wf2yu.json
+[2026-04-18T00:21:41.733Z] Saved Today's Rap Hits 2026  details to ./docs/playlist_details/18EmXIwVHNGJPLuTvPKeBG.json
